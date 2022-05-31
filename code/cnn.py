@@ -50,4 +50,10 @@ def CNN(image_x, image_y, num_of_class):
 
     model.summary()
 
+    filepath = 'cnn_model.h5'
+    checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+    callback_list = [checkpoint]
     
+    return model, callback_list
+
+
