@@ -12,10 +12,12 @@ def images_labels_pickle():
     images.sort()
 
     for image in images:
-        # os.sep => / or \
-        # Here we want to label the image with the folder name (number)
-        # But, there are 3 os.sep: /gestures \num1 \num2.jpg
-        # The number of folder is between second os.sep and the third os.sep 
+        # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+        # os.sep => / or \                                                    #
+        # Here we want to label the image with the folder name (number)       #
+        # But, there are 3 os.sep: /gestures \num1 \num2.jpg                  #
+        # The number of folder is between second os.sep and the third os.sep  #
+        # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
         label = image[image.find(os.sep)+1: image.rfind(os.sep)]
         img = cv2.imread(image, 0)
         print(image)
@@ -25,9 +27,14 @@ def images_labels_pickle():
 
 
 images_labels = images_labels_pickle()
-images_labels = shuffle(shuffle(shuffle(shuffle(images_labels))))
-#print(images_labels)
+images_labels = shuffle(shuffle(shuffle(shuffle(images_labels)))) # shuffle the dataset
 images, labels = zip(*images_labels)
+
+# # # # # # # # # # # # # # # # # # # # # # # #
+# train dataset    => 10/12 of the dataset    #
+# validate dataset => 1/12 of the dataset     #
+# test dataset     => 1/12 of the dataset     #
+# # # # # # # # # # # # # # # # # # # # # # # #
 
 # train 
 train_images = images[:int(5/6*len(images))]
