@@ -84,7 +84,7 @@ def train():
     
     model, callback_list = CNN(image_x, image_y, num_of_class)
     model.summary()
-    model.fit(train_images, train_labels, validation_data=(validate_images, validate_labels), epochs=50, batch_size=500, callbacks=callback_list)
+    model.fit(train_images, train_labels, validation_data=(validate_images, validate_labels), epochs=20, batch_size=500, callbacks=callback_list)
     scores = model.evaluate(validate_images, validate_labels, verbose=0)
     print("CNN Error: %.2f%%" % (100-scores[1]*100))
     model.save('cnn.h5')
