@@ -71,6 +71,9 @@ def train():
         validate_images = np.array(pickle.load(f))
     with open('validate_labels', 'rb') as f:
         validate_labels = np.array(pickle.load(f))
+
+    image_x, image_y = get_image_size()
+    num_of_class = get_num_of_class()
     
     train_images = np.reshape(train_images, (train_images.shape[0], image_x, image_y, 1))
     validate_images = np.reshape(validate_images, (validate_images.shape[0], image_x, image_y, 1))
