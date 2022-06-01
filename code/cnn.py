@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 import cv2 as cv
+from glob import glob
 import os
 from keras import optimizers
 from keras.models import Sequential
@@ -10,10 +11,16 @@ from keras.utils import np_utils
 from keras.callbacks import ModelCheckpoint
 from keras import backend as K
 
-def CNN(image_x, image_y, num_of_class):
-    #image_x = 50
-    #image_y = 50
-    #num_of_class = 44
+def get_image_size():
+    image = cv.imread('../gestures/1/1.jpg', 0)
+    return image.shape
+
+def get_num_of_class():
+    return len(glob('../gesture/*'))
+
+def CNN():
+    image_x, image_y = get_image_size()
+    num_of_class = get_num_of_class()
 
     model = Sequential()
 
@@ -54,7 +61,7 @@ def CNN(image_x, image_y, num_of_class):
     
     return model, callback_list
 
-def train(image_x, image_y, num_of_class):
+def train():
     
     with open('train_images', 'rb') as f:
         train_images = np.array(pickle.load(f))
@@ -68,6 +75,7 @@ def train(image_x, image_y, num_of_class):
     train_images = np.reshape(train_images, (train_images.shape[0], image_x, image_y, 1))
     validate_images = np.reshape(validate_images, (validate_images.shape[0], image_x, image_y, 1))
     # transfer integer to binary encoding, example: num_of_class = 3, 2 => [0,0,1], 1 => [0,1,0]
+    # one hot encoding
     train_labels = np_utils.to_categorical(train_labels)
     validate_labels = np_utils.to_categorical(validate_labels)
     
