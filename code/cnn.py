@@ -10,13 +10,15 @@ from keras.layers.convolutional import Conv2D, MaxPooling2D
 from keras.utils import np_utils
 from keras.callbacks import ModelCheckpoint
 from keras import backend as K
+import h5py
 
 def get_image_size():
     image = cv.imread('../gestures/1/1.jpg', 0)
+    print(image.shape)
     return image.shape
 
 def get_num_of_class():
-    return len(glob('../gesture/*'))
+    return len(glob('../gestures/*'))
 
 def CNN():
     image_x, image_y = get_image_size()
@@ -66,15 +68,14 @@ def train():
     with open('train_images', 'rb') as f:
         train_images = np.array(pickle.load(f))
     with open('train_labels', 'rb') as f:
-        train_labels = np.array(pickle.load(f))
+        train_labels = np.array(pickle.load(f), dtype=np.int32)
     with open('validate_images', 'rb') as f:
         validate_images = np.array(pickle.load(f))
     with open('validate_labels', 'rb') as f:
-        validate_labels = np.array(pickle.load(f))
+        validate_labels = np.array(pickle.load(f), dtype=np.int32)
 
     image_x, image_y = get_image_size()
-    num_of_class = get_num_of_class()
-    
+
     train_images = np.reshape(train_images, (train_images.shape[0], image_x, image_y, 1))
     validate_images = np.reshape(validate_images, (validate_images.shape[0], image_x, image_y, 1))
     # transfer integer to binary encoding, example: num_of_class = 3, 2 => [0,0,1], 1 => [0,1,0]
@@ -82,7 +83,7 @@ def train():
     train_labels = np_utils.to_categorical(train_labels)
     validate_labels = np_utils.to_categorical(validate_labels)
     
-    model, callback_list = CNN(image_x, image_y, num_of_class)
+    model, callback_list = CNN()
     model.summary()
     model.fit(train_images, train_labels, validation_data=(validate_images, validate_labels), epochs=20, batch_size=500, callbacks=callback_list)
     scores = model.evaluate(validate_images, validate_labels, verbose=0)
