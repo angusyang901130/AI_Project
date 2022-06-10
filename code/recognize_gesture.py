@@ -1,8 +1,6 @@
 import cv2, pickle
-from matplotlib import image
 import numpy as np
-from cnn import CNN, get_image_size
-import os
+from cnn import get_image_size
 import sqlite3
 from keras.models import load_model
 

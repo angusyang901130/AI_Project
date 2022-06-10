@@ -24,6 +24,8 @@ def build_squares(image):
             crop = image_crop
         else:
             crop = np.vstack((crop, image_crop))
+
+        image_crop = None
         
         x = 420
         y += h + d
@@ -32,8 +34,9 @@ def build_squares(image):
 
 def get_hand_hist():
     cam = cv2.VideoCapture(1)
-    if not cam.isOpened():
-        cam.open()
+    cam = cv2.VideoCapture(1)
+    if cam.read()[0] == False:
+        cam = cv2.VideoCapture(0)
     
     x, y, w, h = 300, 100, 300, 300
     press_c, press_s = False, False
@@ -45,7 +48,7 @@ def get_hand_hist():
         image = cv2.resize(image, (640, 480))  
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)  # hsv 
 
-        press_key = cv2.waitkey(1)
+        press_key = cv2.waitKey(1)
 
         if not press_s:
             image_crop = build_squares(image)
