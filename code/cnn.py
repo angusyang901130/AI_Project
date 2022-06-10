@@ -1,6 +1,6 @@
 import numpy as np
 import pickle
-import cv2 as cv
+import cv2
 from glob import glob
 import os
 from keras import optimizers
@@ -13,7 +13,7 @@ from keras import backend as K
 import h5py
 
 def get_image_size():
-    image = cv.imread('../gestures/1/1.jpg', 0)
+    image = cv2.imread('../gestures/1/1.jpg', 0)
     print(image.shape)
     return image.shape
 

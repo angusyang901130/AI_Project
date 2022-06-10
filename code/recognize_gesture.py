@@ -7,7 +7,7 @@ from keras.models import load_model
 # FIXME: classifier???
 
 prediction = None
-model = load_model('cnn.h5')
+#model = load_model('cnn.h5')
 image_x, image_y = get_image_size()
 
 def process_img(img):
@@ -60,7 +60,7 @@ def get_hand_hist():
         hist = pickle.load(f)
     return hist
 
-def recognize():
+def recognize(model):
     global prediction
     cap = cv2.VideoCapture(1)
     if cap.read()[0] == False:
@@ -119,5 +119,5 @@ def recognize():
         if cv2.waitKey(1) == ord('q'):
             break
 
-model_predict(model, np.zero((50, 50), dtype=np.uint8))
-recognize()
+""" model_predict(model, np.zero((50, 50), dtype=np.uint8))
+recognize() """
