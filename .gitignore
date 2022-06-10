@@ -1,3 +1,11 @@
+# files
+./code/train_images
+./code/train_labels
+./code/validate_images
+./code/validate_labels
+./code/test_images
+./code/test_labels
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
