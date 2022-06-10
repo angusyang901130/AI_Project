@@ -32,7 +32,7 @@ def build_squares(img):
 
     return crop
 
-def get_hand_hist():
+def set_hand_hist():
     cam = cv2.VideoCapture(1)
     cam = cv2.VideoCapture(1)
     if cam.read()[0] == False:
@@ -48,7 +48,9 @@ def get_hand_hist():
         if img is not None:
             img = cv2.resize(img, (640, 480))  
         else:
-            print("image is None")
+            #print("image is None")
+            continue
+        
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)  # hsv 
 
         press_key = cv2.waitKey(1)
