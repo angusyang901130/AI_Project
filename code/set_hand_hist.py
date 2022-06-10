@@ -60,5 +60,22 @@ def get_hand_hist():
             break
     
         if press_c:
-            back_proj = cv2.calcBackProject([hsv], [0, 1], hist, [0, 180, 0, 256], 1)      # histogram back projection
+            back_proj = cv2.calcBackProject([hsv], [0, 1], hist, [0, 180, 0, 256], 1)  # histogram back projection
             print(back_proj)
+            kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10, 10))  # kernel
+
+            cv2.filter2D(back_proj, -1, kernel, back_proj)  # create convolution between image 
+
+            blur = cv2.GaussianBlur(back_proj, (11, 11), 0) 
+            blur = cv2.medianBlur(blur, 15)
+
+            ret, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+            thresh = cv2.merge((thresh, thresh, thresh))
+
+            cv2.imshow('Threshold', thresh)
+
+    cam.release()
+    cv2.destroyAllWindows()
+    with open("hist", "wb") as f:
+        pickle.dump(hist, f)
+        
