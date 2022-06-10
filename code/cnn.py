@@ -13,21 +13,21 @@ from keras import backend as K
 import h5py
 
 def get_image_size():
-    image = cv2.imread('../gestures/1/1.jpg', 0)
-    print(image.shape)
-    return image.shape
+    img = cv2.imread('../gestures/1/1.jpg', 0)
+    print(img.shape)
+    return img.shape
 
 def get_num_of_class():
     return len(glob('../gestures/*'))
 
 def CNN():
-    image_x, image_y = get_image_size()
+    img_x, img_y = get_image_size()
     num_of_class = get_num_of_class()
 
     model = Sequential()
 
     #layer 1
-    model.add(Conv2D(16, (3, 3), input_shape=(image_x, image_y, 1), activation='relu'))
+    model.add(Conv2D(16, (3, 3), input_shape=(img_x, img_y, 1), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2), padding='same'))
     model.add(Dropout(0.2))
 
@@ -74,10 +74,10 @@ def train():
     with open('validate_labels', 'rb') as f:
         validate_labels = np.array(pickle.load(f), dtype=np.int32)
 
-    image_x, image_y = get_image_size()
+    img_x, img_y = get_image_size()
 
-    train_images = np.reshape(train_images, (train_images.shape[0], image_x, image_y, 1))
-    validate_images = np.reshape(validate_images, (validate_images.shape[0], image_x, image_y, 1))
+    train_images = np.reshape(train_images, (train_images.shape[0], img_x, img_y, 1))
+    validate_images = np.reshape(validate_images, (validate_images.shape[0], img_x, img_y, 1))
     # transfer integer to binary encoding, example: num_of_class = 3, 2 => [0,0,1], 1 => [0,1,0]
     # one hot encoding
     train_labels = np_utils.to_categorical(train_labels)

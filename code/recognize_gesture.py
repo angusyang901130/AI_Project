@@ -8,16 +8,16 @@ from keras.models import load_model
 
 prediction = None
 #model = load_model('cnn.h5')
-image_x, image_y = get_image_size()
 
-def process_img(img):
-    img = cv2.resize(img, (image_x, image_y))
+def process_img(img, img_x, img_y):
+    img = cv2.resize(img, (img_x, img_y))
     img = np.array(img, dtype=np.float32)
-    img = np.reshape(img, (1, image_x, image_y, 1))
+    img = np.reshape(img, (1, img_x, img_y, 1))
     return img
 
 def model_predict(model, img):
-    processed = process_img(img)
+    img_x, img_y = get_image_size()
+    processed = process_img(img, img_x, img_y)
     pred_prob = model.predict(processed)[0]
     pred_class = list(pred_prob).index(max(pred_prob))
     return max(pred_prob), pred_class
