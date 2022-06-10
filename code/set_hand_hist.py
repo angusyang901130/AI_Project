@@ -15,7 +15,7 @@ def build_squares(img):
             if np.any(img_crop == None):
                 img_crop = img[y:y+h, x:x+w]
             else:
-                img_crop = np.hstack((img_crop, img_crop[y:y+h, x:x+w]))
+                img_crop = np.hstack((img_crop, img[y:y+h, x:x+w]))
             
             cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 1)
             x += w + d
@@ -45,7 +45,7 @@ def get_hand_hist():
     while True:
         img = cam.read()[1]  # cam.read()[0] is a bool, indicates if it is read
         img = cv2.flip(img, 1)  # left right opposite
-        if img != None:
+        if img is not None:
             img = cv2.resize(img, (640, 480))  
         else:
             print("image is None")
@@ -61,19 +61,19 @@ def get_hand_hist():
             press_c = True
             hist = cv2.calcHist([hsv_crop], [0, 1], None, [180, 256], [0, 180, 0, 256])  # make historgram, decide color, and number of bins
             cv2.normalize(hist, hist, 0, 255, cv2.NORM_MINMAX)  # normalize and make black and white more clear
-        elif press_key == ord('d'):
+        elif press_key == ord('s'):
             press_s = True
             break
     
         if press_c:
             back_proj = cv2.calcBackProject([hsv], [0, 1], hist, [0, 180, 0, 256], 1)  # histogram back projection
-            print(back_proj)
+            #print(back_proj)
             kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10, 10))  # kernel
 
             cv2.filter2D(back_proj, -1, kernel, back_proj)  # create convolution between image 
 
             blur = cv2.GaussianBlur(back_proj, (11, 11), 0) 
-            blur = cv2.medianBlur(blur, 15)
+            blur = cv2.medianBlur(blur, 17)
 
             ret, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
             thresh = cv2.merge((thresh, thresh, thresh))

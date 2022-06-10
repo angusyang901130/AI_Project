@@ -7,10 +7,11 @@ import numpy as np
 import os
 
 if __name__ == "__main__":
+
     if not os.path.exists('./cnn.h5'):
         load_images_labels()
         train()
-        
+    
     model = load_model('cnn.h5')
 
     print("model has been prepared")
@@ -24,6 +25,6 @@ if __name__ == "__main__":
     get_hand_hist()
 
     print("Do the gesture in the green window")
-    model_predict(model, np.zero((50, 50), dtype=np.uint8))
-    recognize()
+    model_predict(model, np.zeros((50, 50), dtype=np.uint8))
+    recognize(model)
     

@@ -10,7 +10,7 @@ def images_labels_pickle():
     images_labels = []
     images = glob("../gestures/*/*.jpg")
     images.sort()
-
+    
     for image in images:
         # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
         # os.sep => / or \                                                    #
