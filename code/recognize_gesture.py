@@ -6,7 +6,7 @@ from keras.models import load_model
 
 # FIXME: classifier???
 
-prediction = None
+
 #model = load_model('cnn.h5')
 
 def process_img(img, img_x, img_y):
@@ -61,7 +61,8 @@ def get_hand_hist():
     return hist
 
 def recognize(model):
-    global prediction
+    prediction = None
+    
     cap = cv2.VideoCapture(1)
     if cap.read()[0] == False:
         cap = cv2.VideoCapture(0)
@@ -71,8 +72,12 @@ def recognize(model):
     while True:
         text = ""
         img = cap.read()[1]
+
+        if img == None:
+            continue
+
         img = cv2.flip(img, 1)
-        img = cv2.resize(img, (640, 480))
+        img = cv2.resize(img, (640, 480))       
         # imgCrop = img[y:y+h, x:x+w]
         imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -94,6 +99,7 @@ def recognize(model):
             contours = cv2.findContours(thresh.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)[1]
         elif openCV_ver == '4':
             contours = cv2.findContours(thresh.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)[0]
+
         if len(contours) > 0:
             contour = max(contours, key = cv2.contourArea)
             if cv2.contourArea(contour) > 10000:
@@ -109,11 +115,13 @@ def recognize(model):
                 if pred_prob*100 > 80:
                     text = get_pred_text(pred_class)
                     print(text)
+
         blackboard = np.zero((480, 640, 3), dtype=np.uint8)
         splitted_text = split_sentence(text, 2)
         put_text_in_blackboard(blackboard, splitted_text)
         cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
         res = np.hstack((img, blackboard))
+
         cv2.imshow("Recognizing gesture", res)
         cv2.imshow("thresh", thresh)
         if cv2.waitKey(1) == ord('q'):

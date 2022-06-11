@@ -43,14 +43,13 @@ def set_hand_hist():
 
     img_crop = None
     while True:
-        img = cam.read()[1]  # cam.read()[0] is a bool, indicates if it is read
-        img = cv2.flip(img, 1)  # left right opposite
-        if img is not None:
-            img = cv2.resize(img, (640, 480))  
-        else:
-            #print("image is None")
+        img = cam.read()[1]  # cam.read()[0] is a bool, indicates if it is read    
+          
+        if img == None:
             continue
-        
+             
+        img = cv2.flip(img, 1)  # left right opposite
+        img = cv2.resize(img, (640, 480)) 
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)  # hsv 
 
         press_key = cv2.waitKey(1)
