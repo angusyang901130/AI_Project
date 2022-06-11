@@ -14,7 +14,7 @@ import h5py
 
 def get_image_size():
     img = cv2.imread('../gestures/1/1.jpg', 0)
-    print(img.shape)
+    #print(img.shape)
     return img.shape
 
 def get_num_of_class():

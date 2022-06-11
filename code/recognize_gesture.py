@@ -73,7 +73,7 @@ def recognize(model):
         text = ""
         img = cap.read()[1]
 
-        if img == None:
+        if img is None:
             continue
 
         img = cv2.flip(img, 1)

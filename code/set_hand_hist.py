@@ -45,7 +45,7 @@ def set_hand_hist():
     while True:
         img = cam.read()[1]  # cam.read()[0] is a bool, indicates if it is read    
           
-        if img == None:
+        if img is None:
             continue
              
         img = cv2.flip(img, 1)  # left right opposite
