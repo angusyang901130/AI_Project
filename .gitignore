@@ -5,6 +5,7 @@ code/validate_images
 code/validate_labels
 code/test_images
 code/test_labels
+code/hist
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
