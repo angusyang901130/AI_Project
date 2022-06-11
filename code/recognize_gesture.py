@@ -1,8 +1,8 @@
 import cv2, pickle
 import numpy as np
+from sqlalchemy import modifier
 from cnn import get_image_size
 import sqlite3
-from keras.models import load_model
 
 def process_img(img, img_x, img_y):
     img = cv2.resize(img, (img_x, img_y))
@@ -47,6 +47,7 @@ def put_text_in_blackboard(blackboard, splitted_text):
     # cv2.putText(影像, 文字, 座標, 字型, 大小, 顏色, 線條寬度, 線條種類)
     y = 200
     for text in splitted_text:
+        cv2.putText(blackboard, "Predicted text :" + text, (8, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 255))
         cv2.putText(blackboard, text, (4, y), cv2.FONT_HERSHEY_TRIPLEX, 2, (255, 255, 255))
         y += 50
 
@@ -55,6 +56,14 @@ def get_hand_hist():
         hist = pickle.load(f)
     return hist
 
+# def text_mode(cam):
+#     text = ""
+#     word = ""
+#     while True:
+#         img = cam.read()[1]
+#         img 
+
+
 def recognize(model):
     cap = cv2.VideoCapture(1)
     if cap.read()[0] == False:
@@ -62,8 +71,11 @@ def recognize(model):
 
     hist = get_hand_hist()
     x, y, w, h = 300, 100, 300, 300
+    
+    times = 0
+    sentence = ""
+    text = ""
     while True:
-        text = ""
         img = cap.read()[1]
         
         if img is None:
@@ -81,7 +93,7 @@ def recognize(model):
         cv2.filter2D(dst, -1, disc, dst)
 
         blur = cv2.GaussianBlur(dst, (11, 11), 0)
-        blur = cv2.medianBlur(blur, 15)
+        blur = cv2.medianBlur(blur, 17)
         thresh = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)[1]
         thresh = cv2.merge((thresh, thresh, thresh))
         thresh = cv2.cvtColor(thresh, cv2.COLOR_BGR2GRAY)
@@ -107,17 +119,57 @@ def recognize(model):
                 pred_prob, pred_class = model_predict(model, save_img)
 
                 if pred_prob*100 > 80:
+                    old_text = text
                     text = get_pred_text(pred_class)
-                    print(text)
-        blackboard = np.zeros((480, 640, 3), dtype=np.uint8)
-        splitted_text = split_sentence(text, 2)
-        put_text_in_blackboard(blackboard, splitted_text)
-        cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        res = np.hstack((img, blackboard))
-        cv2.imshow("Recognizing gesture", res)
-        cv2.imshow("thresh", thresh)
-        if cv2.waitKey(1) == ord('q'):
-            break
+                    print(old_text ,text)
+                    if old_text == text:
+                        times += 1
+                    else: 
+                        times = 0
+                    if times >= 5:
+                        # if len(text) == 1:
+                        sentence += text
+                        times = 0
+            # else:
+            #     sentence = ""
+            #     text = ""
+            blackboard = np.zeros((480, 640, 3), dtype=np.uint8)
+            cv2.putText(blackboard, " ", (180, 50), cv2.FONT_HERSHEY_TRIPLEX, 1.5, (255, 0,0))
+            cv2.putText(blackboard, "Predicted text- " + text, (30, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 0))
+            cv2.putText(blackboard, sentence, (30, 240), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 255)) 
+    #     splitted_text = split_sentence(text, 2)
+    #     # sentence += splitted_text
+    #     for t in splitted_text:
+    #         sentence += t
+    #     # splitted_text = split_sentence(sentence, 2)
+    #     put_text_in_blackboard(blackboard, splitted_text)
+            cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+            res = np.hstack((img, blackboard))
+            cv2.imshow("Recognizing gesture", res)
+            cv2.imshow("thresh", thresh)
+            keyboard_input = cv2.waitKey(1)
+            if keyboard_input == 32:
+                sentence += " "
+            if keyboard_input == ord('m'):
+                while True:
+                    modify = cv2.waitKey(1)
+                    if modify == ord('d'):
+                        sentence = sentence[:-1]
+                    if modify == ord('q'):
+                        break
+                    blackboard = np.zeros((480, 640, 3), dtype=np.uint8)
+                    cv2.putText(blackboard, " ", (180, 50), cv2.FONT_HERSHEY_TRIPLEX, 1.5, (255, 0,0))
+                    cv2.putText(blackboard, "Press d to delete ", (30, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 0))
+                    cv2.putText(blackboard, sentence, (30, 240), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 255)) 
+                    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                    res = np.hstack((img, blackboard))
+                    cv2.imshow("Recognizing gesture", res)
+                    cv2.imshow("thresh", thresh)
+            if keyboard_input == ord('q'):
+                print(sentence)
+                break
+    # print("Ans: ", sentence)
+
 
 """ model_predict(model, np.zero((50, 50), dtype=np.uint8))
 recognize() """
