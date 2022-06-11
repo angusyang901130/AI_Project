@@ -3,6 +3,13 @@ import numpy as np
 from sqlalchemy import modifier
 from cnn import get_image_size
 import sqlite3
+import pyttsx3
+import os
+
+engine = pyttsx3.init()
+
+# set the speaking rate
+engine.setProperty('rate', 100)
 
 def process_img(img, img_x, img_y):
     img = cv2.resize(img, (img_x, img_y))
@@ -56,13 +63,11 @@ def get_hand_hist():
         hist = pickle.load(f)
     return hist
 
-# def text_mode(cam):
-#     text = ""
-#     word = ""
-#     while True:
-#         img = cam.read()[1]
-#         img 
-
+def say_sentence(sentence):
+    while engine._inLoop:
+        pass
+    engine.say(sentence)
+    engine.runAndWait()
 
 def recognize(model):
     cap = cv2.VideoCapture(1)
@@ -71,7 +76,7 @@ def recognize(model):
 
     hist = get_hand_hist()
     x, y, w, h = 300, 100, 300, 300
-    
+
     times = 0
     sentence = ""
     text = ""
@@ -165,6 +170,16 @@ def recognize(model):
                     res = np.hstack((img, blackboard))
                     cv2.imshow("Recognizing gesture", res)
                     cv2.imshow("thresh", thresh)
+            if keyboard_input == ord('s'):
+                # blackboard = np.zeros((480, 640, 3), dtype=np.uint8)
+                # cv2.putText(blackboard, " ", (180, 50), cv2.FONT_HERSHEY_TRIPLEX, 1.5, (255, 0,0))
+                # cv2.putText(blackboard, "Speaking", (30, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 0))
+                # cv2.putText(blackboard, sentence, (30, 240), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 255)) 
+                # cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                # res = np.hstack((img, blackboard))
+                # cv2.imshow("Recognizing gesture", res)
+                # cv2.imshow("thresh", thresh)
+                say_sentence(sentence)
             if keyboard_input == ord('q'):
                 print(sentence)
                 break
