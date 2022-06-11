@@ -131,23 +131,16 @@ def recognize(model):
                         times += 1
                     else: 
                         times = 0
-                    if times >= 5:
-                        # if len(text) == 1:
+                    if times >= 20:
                         sentence += text
                         times = 0
-            # else:
-            #     sentence = ""
-            #     text = ""
+            else:
+                sentence = ""
+                text = ""
             blackboard = np.zeros((480, 640, 3), dtype=np.uint8)
             cv2.putText(blackboard, " ", (180, 50), cv2.FONT_HERSHEY_TRIPLEX, 1.5, (255, 0,0))
             cv2.putText(blackboard, "Predicted text- " + text, (30, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 0))
             cv2.putText(blackboard, sentence, (30, 240), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 255)) 
-    #     splitted_text = split_sentence(text, 2)
-    #     # sentence += splitted_text
-    #     for t in splitted_text:
-    #         sentence += t
-    #     # splitted_text = split_sentence(sentence, 2)
-    #     put_text_in_blackboard(blackboard, splitted_text)
             cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
             res = np.hstack((img, blackboard))
             cv2.imshow("Recognizing gesture", res)
@@ -171,14 +164,6 @@ def recognize(model):
                     cv2.imshow("Recognizing gesture", res)
                     cv2.imshow("thresh", thresh)
             if keyboard_input == ord('s'):
-                # blackboard = np.zeros((480, 640, 3), dtype=np.uint8)
-                # cv2.putText(blackboard, " ", (180, 50), cv2.FONT_HERSHEY_TRIPLEX, 1.5, (255, 0,0))
-                # cv2.putText(blackboard, "Speaking", (30, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 0))
-                # cv2.putText(blackboard, sentence, (30, 240), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 255)) 
-                # cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
-                # res = np.hstack((img, blackboard))
-                # cv2.imshow("Recognizing gesture", res)
-                # cv2.imshow("thresh", thresh)
                 say_sentence(sentence)
             if keyboard_input == ord('q'):
                 print(sentence)
