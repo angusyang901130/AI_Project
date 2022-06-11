@@ -6,7 +6,7 @@ from keras.models import load_model
 
 # FIXME: classifier???
 
-
+prediction = None
 #model = load_model('cnn.h5')
 
 def process_img(img, img_x, img_y):
@@ -40,7 +40,7 @@ def split_sentence(text, num_of_words):
     end_ind = num_of_words
     while length > 0:
         part = ""
-        for word in list_words[begin_ind, end_ind]:
+        for word in list_words[begin_ind:end_ind]:
             part = part + " " + word
         splitted_sentence.append(part)
         begin_ind += num_of_words
@@ -62,7 +62,7 @@ def get_hand_hist():
 
 def recognize(model):
     prediction = None
-    
+
     cap = cv2.VideoCapture(1)
     if cap.read()[0] == False:
         cap = cv2.VideoCapture(0)
@@ -72,12 +72,12 @@ def recognize(model):
     while True:
         text = ""
         img = cap.read()[1]
-
+        
         if img is None:
             continue
-
+        
         img = cv2.flip(img, 1)
-        img = cv2.resize(img, (640, 480))       
+        img = cv2.resize(img, (640, 480))
         # imgCrop = img[y:y+h, x:x+w]
         imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -89,6 +89,7 @@ def recognize(model):
 
         blur = cv2.GaussianBlur(dst, (11, 11), 0)
         blur = cv2.medianBlur(blur, 15)
+        thresh = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)[1]
         thresh = cv2.merge((thresh, thresh, thresh))
         thresh = cv2.cvtColor(thresh, cv2.COLOR_BGR2GRAY)
         thresh = thresh[y:y+h, x:x+w]
@@ -99,11 +100,11 @@ def recognize(model):
             contours = cv2.findContours(thresh.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)[1]
         elif openCV_ver == '4':
             contours = cv2.findContours(thresh.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)[0]
-
         if len(contours) > 0:
             contour = max(contours, key = cv2.contourArea)
             if cv2.contourArea(contour) > 10000:
-                x1, y1, w1, h1 = thresh[y1:y1+h1, x1:x1+w1]
+                x1, y1, w1, h1 = cv2.boundingRect(contour)
+                save_img = thresh[y1:y1+h1, x1:x1+w1]
 
                 if w1 > h1:
                     save_img = cv2.copyMakeBorder(save_img, int((w1-h1)/2), int((w1-h1)/2), 0, 0, cv2.BORDER_CONSTANT, (0, 0, 0))
@@ -115,13 +116,11 @@ def recognize(model):
                 if pred_prob*100 > 80:
                     text = get_pred_text(pred_class)
                     print(text)
-
-        blackboard = np.zero((480, 640, 3), dtype=np.uint8)
+        blackboard = np.zeros((480, 640, 3), dtype=np.uint8)
         splitted_text = split_sentence(text, 2)
         put_text_in_blackboard(blackboard, splitted_text)
         cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
         res = np.hstack((img, blackboard))
-
         cv2.imshow("Recognizing gesture", res)
         cv2.imshow("thresh", thresh)
         if cv2.waitKey(1) == ord('q'):
