@@ -4,11 +4,6 @@ from cnn import get_image_size
 import sqlite3
 from keras.models import load_model
 
-# FIXME: classifier???
-
-prediction = None
-#model = load_model('cnn.h5')
-
 def process_img(img, img_x, img_y):
     img = cv2.resize(img, (img_x, img_y))
     img = np.array(img, dtype=np.float32)
@@ -61,8 +56,6 @@ def get_hand_hist():
     return hist
 
 def recognize(model):
-    prediction = None
-
     cap = cv2.VideoCapture(1)
     if cap.read()[0] == False:
         cap = cv2.VideoCapture(0)
@@ -75,7 +68,7 @@ def recognize(model):
         
         if img is None:
             continue
-        
+
         img = cv2.flip(img, 1)
         img = cv2.resize(img, (640, 480))
         # imgCrop = img[y:y+h, x:x+w]
