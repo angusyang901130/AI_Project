@@ -78,6 +78,7 @@ def recognize(model):
     x, y, w, h = 300, 100, 300, 300
 
     times = 0
+    clear_times = 0
     sentence = ""
     text = ""
     while True:
@@ -98,7 +99,7 @@ def recognize(model):
         cv2.filter2D(dst, -1, disc, dst)
 
         blur = cv2.GaussianBlur(dst, (11, 11), 0)
-        blur = cv2.medianBlur(blur, 17)
+        blur = cv2.medianBlur(blur, 15)
         thresh = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)[1]
         thresh = cv2.merge((thresh, thresh, thresh))
         thresh = cv2.cvtColor(thresh, cv2.COLOR_BGR2GRAY)
@@ -123,7 +124,7 @@ def recognize(model):
 				
                 pred_prob, pred_class = model_predict(model, save_img)
 
-                if pred_prob*100 > 80:
+                if pred_prob*100 > 70:
                     old_text = text
                     text = get_pred_text(pred_class)
                     print(old_text ,text)
@@ -139,8 +140,11 @@ def recognize(model):
                         elif sentence.endswith('I/Me'):
                             sentence.replace('I/Me', 'me')
             else:
-                sentence = ""
-                text = ""
+                clear_times += 1
+                if clear_times >= 10:
+                    sentence = ""
+                    text = ""
+                    clear_times = 0
             blackboard = np.zeros((480, 640, 3), dtype=np.uint8)
             cv2.putText(blackboard, " ", (180, 50), cv2.FONT_HERSHEY_TRIPLEX, 1.5, (255, 0,0))
             cv2.putText(blackboard, "Predicted text- " + text, (30, 100), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 255, 0))
