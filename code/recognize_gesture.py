@@ -134,6 +134,10 @@ def recognize(model):
                     if times >= 20:
                         sentence += text
                         times = 0
+                        if sentence.startswith('I/Me'):
+                            sentence = sentence.replace('I/Me', 'I')
+                        elif sentence.endswith('I/Me'):
+                            sentence.replace('I/Me', 'me')
             else:
                 sentence = ""
                 text = ""
