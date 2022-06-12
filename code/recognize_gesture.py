@@ -124,10 +124,11 @@ def recognize(model):
 				
                 pred_prob, pred_class = model_predict(model, save_img)
 
-                if pred_prob*100 > 70:
+                if pred_prob*100 > 80:
                     old_text = text
                     text = get_pred_text(pred_class)
                     print(old_text ,text)
+                    clear_times = 0
                     if old_text == text:
                         times += 1
                     else: 
