@@ -1,4 +1,4 @@
-h5py
+pandas
 numpy
 scikit-learn
 sklearn
@@ -6,3 +6,5 @@ keras
 opencv-python
 tensorflow
 pyttsx3
+matplotlib
+seaborn
