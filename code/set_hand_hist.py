@@ -74,7 +74,7 @@ def set_hand_hist():
             cv2.filter2D(back_proj, -1, kernel, back_proj)  # create convolution between image 
 
             blur = cv2.GaussianBlur(back_proj, (11, 11), 0) 
-            blur = cv2.medianBlur(blur, 17)
+            blur = cv2.medianBlur(blur, 15)
 
             ret, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
             thresh = cv2.merge((thresh, thresh, thresh))
