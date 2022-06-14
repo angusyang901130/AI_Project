@@ -2,7 +2,7 @@ import numpy as np
 import pickle
 import cv2
 from glob import glob
-from keras import optimizers
+from keras import optimizers, metrics
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers.convolutional import Conv2D, MaxPooling2D
@@ -47,7 +47,7 @@ def CNN():
     model.add(Dropout(0.2))
     model.add(Dense(num_of_class, activation='softmax'))
 
-    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy', metrics.categorical_accuracy])
     # not sure which works
     """ model.compile(
         optimizer = optimizers.SGD(lr = 0.01),
@@ -55,7 +55,7 @@ def CNN():
         metrics = ['accuracy']
     ) """
 
-    filepath = 'cnn_v4.h5'
+    filepath = 'cnn.h5'
     checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     callback_list = [checkpoint]
     
