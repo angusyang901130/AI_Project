@@ -16,15 +16,11 @@ Python 3.10.4
 9. seaborn
 
 ## Goal
-We want to compare CNN model prediction between different kind 
-
-of dataset and see if we can get a better prediction, 
+We want to compare CNN model prediction between different kind of dataset and see if we can get a better prediction, 
 
 and then use as the model for recognizing sign language. 
 
-We also want to reduce the complexity of the setting dataset 
-
-to realize the instant interpreting. 
+We also want to reduce the complexity of the setting dataset to realize the instant interpreting. 
 
 After testing, we want to apply the method to instant recognition.
 
@@ -67,7 +63,10 @@ This comparison has quite equal size of dataset and the dataset includes data of
 
 ### Interpreting
 We use the blurred images as input to train our model, this time the dataset consists of J and Z and other words such as love, 
+
 our CNN model is able to predict the 44 characters or words in the ALS with a prediction accuracy > 95%.
+
+But, the setup of environment is quite important, if the noise is big, the accuracy of setting hand histogram would decrease.
 
 This is our prediction and recognition example
 
