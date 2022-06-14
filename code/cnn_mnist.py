@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import keras
+from keras import metrics
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, Dropout
 from keras.utils import np_utils
@@ -62,7 +63,7 @@ def cnn_mnist():
 
     model.add(Dense(24, activation = 'softmax'))
 
-    model.compile(loss = keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(), metrics=['accuracy'])
+    model.compile(loss = keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(), metrics=['accuracy', metrics.categorical_accuracy])
     filepath = "cnn_mnist.h5"
     checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     callback_list = [checkpoint]
