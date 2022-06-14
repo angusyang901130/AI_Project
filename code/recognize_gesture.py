@@ -133,7 +133,7 @@ def recognize(model):
                         times += 1
                     else: 
                         times = 0
-                    if times >= 20:
+                    if times >= 10:
                         sentence += text
                         times = 0
                         if sentence.startswith('I/Me'):
