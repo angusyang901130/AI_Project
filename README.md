@@ -1,5 +1,8 @@
 # AI_Project
 
+## Enviornment
+Python 3.10.4
+
 ## Requirements
 0. pandas
 1. numpy
@@ -11,6 +14,11 @@
 7. pyttsx3
 8. matplotlib
 9. seaborn
+
+## Goal
+We want to compare CNN model prediction between different kind of dataset and see if we can get a 
+better prediction, and then use as the model for recognizing sign language. We also want to reduce the complexity 
+of the setting dataset to realize the instant interpreting. 
 
 ## Guidence
 
@@ -43,4 +51,17 @@ If you finish doing the gestures, press s to say out the text.
 Press q to finish program
 
 ## Result
-After training, our CNN model is able to predict the 44 character in the ALS with a prediction accuracy > 95%.
+### Comparison between 2 kinds of dataset
+Comparing the result of training 20 epochs with input of no blurred dataset and input of blurred dataset,
+the former CNN model has a prediction accuracy about 90%, and the latter CNN model has a prediction accuracy > 95%.
+
+This comparison has quite equal size of dataset and the dataset includes data of A to Z without J and Z.
+
+### Interpreting
+We use the blurred images as input to train our model, this time the dataset consists of J and Z and other words such as love, 
+our CNN model is able to predict the 44 characters or words in the ALS with a prediction accuracy > 95%.
+
+This is our prediction and recognition example
+
+![image](https://user-images.githubusercontent.com/90640506/173620865-1212596d-c667-4a16-8598-2d53b2aa9e42.png)
+
