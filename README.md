@@ -66,7 +66,7 @@ We use the blurred images as input to train our model, this time the dataset con
 
 our CNN model is able to predict the 44 characters or words in the ALS with a prediction accuracy > 95%.
 
-But, the setup of environment is quite important, if the noise is big, the accuracy of setting hand histogram would decrease.
+The setup of environment is quite important, if the noise is big, the accuracy of setting hand histogram would decrease.
 
 This is our prediction and recognition example
 
