@@ -16,9 +16,9 @@ Python 3.10.4
 9. seaborn
 
 ## Goal
-We want to compare CNN model prediction between different kind of dataset and see if we can get a better prediction, 
+We want to compare CNN model prediction between different kind of dataset and see if we can get a better 
 
-and then use as the model for recognizing sign language. 
+prediction, and then use as the model for recognizing sign language. 
 
 We also want to reduce the complexity of the setting dataset to realize the instant interpreting. 
 
