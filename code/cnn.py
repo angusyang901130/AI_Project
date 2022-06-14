@@ -80,18 +80,18 @@ def train():
 
     train_images = np.reshape(train_images, (train_images.shape[0], img_x, img_y, 1))
     validate_images = np.reshape(validate_images, (validate_images.shape[0], img_x, img_y, 1))
-    #test_images = np.reshape(test_images, (test_images.shape[0], img_x, img_y, 1))
+    test_images = np.reshape(test_images, (test_images.shape[0], img_x, img_y, 1))
 
     # transfer integer to binary encoding, example: num_of_class = 3, 2 => [0,0,1], 1 => [0,1,0]
     # one hot encoding
     train_labels = np_utils.to_categorical(train_labels)
     validate_labels = np_utils.to_categorical(validate_labels)
-    #test_labels = np_utils.to_categorical(test_labels)
+    test_labels = np_utils.to_categorical(test_labels)
     
     model, callback_list = CNN()
     model.summary()
     model.fit(train_images, train_labels, validation_data=(validate_images, validate_labels), epochs=20, batch_size=500, callbacks=callback_list)
     #print("evaluate on test dataset")
-    scores = model.evaluate(validate_images, validate_labels, verbose=0)
+    scores = model.evaluate(test_images, test_labels, verbose=0)
     print("CNN Error: %.2f%%" % (100-scores[1]*100))
     model.save('cnn.h5')
