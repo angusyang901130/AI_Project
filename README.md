@@ -32,14 +32,18 @@ Go to folder code and open it in terminal
 `python main.py`  
   
 ### Step 2: Set up hand histogram
-When the window of camera image shows, put your palm to cover all green squares and press c to check if your hand could be detected and become white color.
+When the window of camera image shows, put your palm to cover all green squares and press c to check 
 
-if you are not satisified with the result of shape of hand, press c to readjust the recognized shape
+if your hand could be detected and become white color.
+
+If you are not satisified with the result of shape of hand, press c to readjust the recognized shape
 
 Press s to save the hist
 
 ### Step 3: Recognize
-When the window with green square appears, do hand gesture in the green square, it would then predict what alphabet or word it might be and add to the text.
+When the window with green square appears, do hand gesture in the green square, 
+
+it would then predict what alphabet or word it might be and add to the text.
 
 If you want to add space, press space.
 
