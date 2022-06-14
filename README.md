@@ -57,6 +57,7 @@ Press q to finish program
 ## Result
 ### Comparison between 2 kinds of dataset
 Comparing the result of training 20 epochs with input of no blurred dataset and input of blurred dataset,
+
 the former CNN model has a prediction accuracy about 90%, and the latter CNN model has a prediction accuracy > 95%.
 
 This comparison has quite equal size of dataset and the dataset includes data of A to Z without J and Z.
