@@ -1,6 +1,6 @@
 # AI_Project
 
-This is the final project of the course Introduction to AI
+This is the team final project of the course Introduction to AI
 
 ## Enviornment
 Python 3.10.4
